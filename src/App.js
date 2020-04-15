@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { Route, Switch } from "react-router-dom";
+
+import { auth, getUserProfileData } from "./firebase/firebase.utils";
+
+import SignIn from "./components/signin/signin.component";
+import SignUp from "./components/signup/signup.component";
+import Header from "./components/header/header.component";
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: null,
+    };
+  }
+
+  unsubscribeFromAuth = null;
+
+  componentDidMount = () => {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await getUserProfileData(userAuth);
+
+        userRef.onSnapshot((snapShot) => {
+          this.setState({
+            id: snapShot.id,
+            ...snapShot.data(),
+          });
+          console.log(this.state.currentUser);
+        });
+      }
+
+      this.setState({currentUser: userAuth})
+    });
+  };
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Header currentUser={this.state.currentUser} />
+        <Switch>
+          <Route exact path="/signin" component={SignIn} />
+          <Route exact path="/signup" component={SignUp} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
