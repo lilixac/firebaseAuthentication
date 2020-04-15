@@ -7,7 +7,7 @@ import { auth } from '../../firebase/firebase.utils';
 const Header = ({ currentUser }) => (
 	<Navbar collapseOnSelect expand="lg">
 		<Navbar.Brand>
-			<Link to="/"> Pets Nepal</Link>
+			<Link to="/"> Brand </Link>
 		</Navbar.Brand>
 		<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 		<Navbar.Collapse id="responsive-navbar-nav">
