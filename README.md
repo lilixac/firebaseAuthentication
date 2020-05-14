@@ -1,3 +1,11 @@
+While creating a firebase app, enable :
+
+### Authentication With Google
+### Authentication With Email and Password
+### Set Up Web App
+### Create User collection in database
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
